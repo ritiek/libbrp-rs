@@ -1,0 +1,22 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: libbrp
+      run: |
+        make lib
+        make clean
+        make examples
+        make clean
+        make all
