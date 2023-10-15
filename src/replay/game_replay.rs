@@ -4,10 +4,20 @@ use std::path::PathBuf;
 
 use super::decompressed_replay::DecompressedReplay;
 use super::replay_header::Header;
+use crate::huffman;
 
-#[link(name = "brp")]
+#[link(name = "huffman")]
 extern "C" {
-    fn decompress_replay_file(input_path: *const i8, output_path: *const i8) -> u16;
+    fn decompress(src: *const std::ffi::c_uchar) -> *mut u8;
+}
+
+unsafe fn decompress_replay_file(input_path: &PathBuf, output_path: &PathBuf) {
+    // let data: [u8; 10] = [130, 209, 30, 255, 237, 209, 255, 237, 87, 63];
+    // let c_data = CString::new(data).unwrap();
+    // unsafe {
+    //     decompress(c_data.as_ptr());
+    // };
+    huffman::build();
 }
 
 #[derive(Debug, Clone)]
@@ -24,18 +34,8 @@ impl Replay {
     ///
     /// This function is unsafe because it calls a C function.
     pub unsafe fn decompress(&self, output: PathBuf) -> Result<DecompressedReplay, Box<dyn Error>> {
-        let input_file = CString::new(
-            self.path
-                .to_str()
-                .ok_or(format!("CString fail: {:?}", self.path))?,
-        )?;
-        let output_file = CString::new(
-            output
-                .to_str()
-                .ok_or(format!("CString fail: {:?}", output))?,
-        )?;
         unsafe {
-            decompress_replay_file(input_file.as_ptr(), output_file.as_ptr());
+            decompress_replay_file(&self.path, &output)
         }
         Ok(DecompressedReplay::new(output))
     }

@@ -89,8 +89,9 @@ int Replay::write_decompressed_data(FILE *output) {
         message.push_back(byte);
       }
       this->bytes_seeked += message_size;
-      Huffman huffman;
-      std::vector<uint8_t> result = huffman.decompress(message);
+      // Huffman huffman;
+      // std::vector<uint8_t> result = huffman.decompress(message);
+      std::vector<uint8_t> result = decompress(message);
 
       auto len32 = static_cast<uint32_t>(result.size());
       {

@@ -27,12 +27,14 @@
 
 // #include "ballistica/core/object.h"
 
+extern "C" std::vector<uint8_t> decompress(const std::vector<uint8_t>& src);
+
 class Huffman {
 public:
   Huffman();
   ~Huffman();
 
-  void build();
+  extern "C" void build();
 
   // NOTE: this assumes the topmost bit of the first byte is unused
   // (see details in implementation).

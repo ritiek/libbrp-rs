@@ -1,4 +1,4 @@
-# libanalyze
+# libbrp-rs
 
 ## Usage
 

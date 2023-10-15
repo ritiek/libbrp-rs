@@ -70,6 +70,7 @@ auto Huffman::decompress(const std::vector<uint8_t>& src)
   // for (int i=0; i<src.size(); i++) {
   //   std::cout << (int)src[i] << std::endl;
   // }
+  // std::cout << std::endl << std::endl;
 
   const char* data = (const char*)src.data();
 
@@ -250,4 +251,9 @@ void Huffman::build() {
   // for (int x=0; x<256; x++) {
   //   std::cout << nodes_[x].val << ": " << nodes_[x].frequency << std::endl;
   // }
+}
+
+extern "C" std::vector<uint8_t> decompress(const std::vector<uint8_t>& src) {
+  Huffman h;
+  return h.decompress(src);
 }
